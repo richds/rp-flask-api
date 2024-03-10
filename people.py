@@ -1,45 +1,25 @@
 # people.py
 
-from datetime import datetime
+
 from flask import abort, make_response
-
-def get_timestamp():
-    return datetime.now().strftime(("%Y-%m-%d %H:%M:%S"))
-
-PEOPLE = {
-    "Fairy": {
-        "fname": "Tooth",
-        "lname": "Fairy",
-        "timestamp": get_timestamp(),
-    },
-    "Ruprecht": {
-        "fname": "Knecht",
-        "lname": "Ruprecht",
-        "timestamp": get_timestamp(),
-    },
-    "Bunny": {
-        "fname": "Easter",
-        "lname": "Bunny",
-        "timestamp": get_timestamp(),
-    }
-}
+from config import db
+from models import Person, people_schema, person_schema
 
 
 def read_all():
-    return list(PEOPLE.values())
+    people = Person.query.all()
+    return people_schema.dump(people)
 
 
 def create(person):
     lname = person.get("lname")
-    fname = person.get("fname", "")
+    existing_person = Person.query.filter(Person.lname == lname).one_or_none()
 
-    if lname and lname not in PEOPLE:
-        PEOPLE[lname] = {
-            "lname": lname,
-            "fname": fname,
-            "timestamp": get_timestamp(),
-        }
-        return PEOPLE[lname], 201
+    if existing_person is None:
+        new_person = person_schema.load(person, session=db.session)
+        db.session.add(new_person)
+        db.session.commit()
+        return person_schema.dump(new_person), 201
     else:
         abort(
             406,
@@ -48,8 +28,10 @@ def create(person):
 
 
 def read_one(lname):
-    if lname in PEOPLE:
-        return PEOPLE[lname]
+    person = Person.query.filter(Person.lname == lname).one_or_none()
+
+    if person is not None:
+        return person_schema.dump(person)
     else:
         abort(
             404, f"Person with last name {lname} not found"
@@ -57,10 +39,14 @@ def read_one(lname):
 
 
 def update(lname, person):
-    if lname in PEOPLE:
-        PEOPLE[lname]["fname"] = person.get("fname", PEOPLE[lname]["fname"])
-        PEOPLE[lname]["timestamp"] = get_timestamp()
-        return PEOPLE[lname]
+    existing_person = Person.query.filter(Person.lname == lname).one_or_none()
+
+    if existing_person:
+        update_person = person_schema.load(person, session=db.session)
+        existing_person.fname = update_person.fname
+        db.session.merge(existing_person)
+        db.session.commit()
+        return person_schema.dump(existing_person), 201
     else:
         abort(
             404,
@@ -69,11 +55,12 @@ def update(lname, person):
 
 
 def delete(lname):
-    if lname in PEOPLE:
-        del PEOPLE[lname]
-        return make_response(
-            f"{lname} successfully deleted", 200
-        )
+    existing_person = Person.query.filter(Person.lname == lname).one_or_none()
+
+    if existing_person:
+        db.session.delete(existing_person)
+        db.session.commit()
+        return make_response(f"{lname} successfully deleted", 200)
     else:
         abort(
             404,
