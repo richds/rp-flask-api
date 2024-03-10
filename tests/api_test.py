@@ -22,7 +22,7 @@ def pretty_print_json(input_string):
 def test_hello_world():
     r = requests.get(base_url)
     assert r.status_code == 200
-    assert "Hello, World!" in r.text
+    assert "Hello, People!" in r.text
 
 
 def test_get_people():
@@ -49,12 +49,12 @@ def test_put_person():
 
 def test_get_single_person():
     myguy = {
-        "fname": "Easter",
-        "lname": "Bunny"
+        "fname": "Tooth",
+        "lname": "Fairy"
     }
     r = requests.get(people_url + myguy["lname"])
     assert r.status_code == 200, r.url
-    items_to_check = ("Easter", "Bunny")
+    items_to_check = ("Tooth", "Fairy")
     for item in items_to_check:
         assert item in r.text, item + " not found in return string: " + pretty_print_json(r.text)
 
