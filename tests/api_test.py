@@ -13,6 +13,11 @@ headers = {
     'Accept': mimetype
     }
 
+character_list = [
+    {"lname": "Fairy", "fname": "Tooth", "notes": "I brush my teeth after each meal."},
+    {"lname": "Ruprecht", "fname": "Knecht", "notes": "I swear, I'll do better this year."},
+    {"lname": "Bunny", "fname": "Easter", "notes": "Please keep the current inflation rate in mind!"}
+]
 
 def pretty_print_json(input_string):
     json_dict = json.loads(input_string)
@@ -57,6 +62,15 @@ def test_get_single_person():
     items_to_check = ("Tooth", "Fairy")
     for item in items_to_check:
         assert item in r.text, item + " not found in return string: " + pretty_print_json(r.text)
+
+
+def test_get_person_x():
+    for guy in character_list:
+        r = requests.get(people_url + guy["lname"])
+        assert r.status_code == 200
+        items_to_check = (guy["lname"], guy["fname"], guy["notes"])
+        for item in items_to_check:
+            assert item in r.text, item + " not found in return string: " + pretty_print_json(r.text) 
 
 
 def test_update_person():
