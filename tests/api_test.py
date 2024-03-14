@@ -38,7 +38,7 @@ def test_get_people():
         assert item in r.text, item + " not found in return string: " + pretty_print_json(r.text)
 
 
-def test_put_person():
+def test_create_person():
     new_person = {
         "fname": "Art",
         "lname": "Vandelay"
@@ -79,7 +79,7 @@ def test_update_person():
         "lname": "Bunny"
     }
     r = requests.put(url=people_url + myguy["lname"], headers=headers, json=myguy)
-    assert r.status_code == 201, r.reason
+    assert r.status_code == 201, r.text
     r = requests.get(people_url.rstrip("/"))
     assert r.status_code == 200
     items_to_check = ("Barry", "Bunny")

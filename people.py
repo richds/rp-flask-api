@@ -46,7 +46,7 @@ def update(lname, person):
         existing_person.fname = update_person.fname
         db.session.merge(existing_person)
         db.session.commit()
-        return person_schema.dump(existing_person), 200
+        return person_schema.dump(existing_person), 201
     else:
         abort(
             404,
