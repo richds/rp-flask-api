@@ -1,4 +1,4 @@
-from flask import render_template # Remove: import Flask
+from flask import render_template
 import config
 from models import Person
 
