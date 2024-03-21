@@ -1,5 +1,12 @@
 pipeline {
-    agent { dockerfile true }
+    agent { 
+        dockerfile {
+            additionalBuildArgs '--tag rpflask:jenkinstest'
+            args ' -V $WORKSPACE:/results'
+        }
+    environment {
+        HOME = '${env.WORKSPACE}'
+    }
     stages {
         stage('buildapp') {
             steps {
@@ -12,10 +19,15 @@ pipeline {
                     sh 'python3 build_database.py'
                     sh 'python3 app.py &'
                     dir ("tests") {
-                    sh 'pytest -svx api_test.py'
+                    sh 'pytest -svx api_test.py --junitxml=/results/test_results.xml'
                     }
                 }
             }
+        }
+    }
+    post {
+        always {
+            junit '**/test_results.xml'
         }
     }
 }
