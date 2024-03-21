@@ -4,6 +4,7 @@ pipeline {
             additionalBuildArgs '--tag rpflask:jenkinstest'
             args ' -V $WORKSPACE:/results'
         }
+    }
     environment {
         HOME = '${env.WORKSPACE}'
     }
@@ -29,6 +30,5 @@ pipeline {
         always {
             junit '**/test_results.xml'
         }
-    }
     }
 }
