@@ -2,7 +2,7 @@ pipeline {
     agent { 
         dockerfile {
             additionalBuildArgs '--tag rpflask:jenkinstest'
-            args ' -V $WORKSPACE:/results'
+            args ' -v $WORKSPACE:/results'
         }
     }
     environment {
