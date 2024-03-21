@@ -110,7 +110,7 @@ def test_delete_person():
 def test_get_notes():
     r = requests.get(people_url.rstrip("/"))
     assert r.status_code == 200, r.text
-    items_to_check = ("No need to hide the ham this time.",
+    items_to_check = ("No need to hide the eggs this time.",
                         "Really! Only good deeds from now on!",
                         "I brush my teeth after each meal.")
     for item in items_to_check: 
