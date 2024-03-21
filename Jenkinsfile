@@ -30,4 +30,5 @@ pipeline {
             junit '**/test_results.xml'
         }
     }
+    }
 }
