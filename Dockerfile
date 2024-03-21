@@ -9,4 +9,4 @@ COPY . /app
 RUN ["python3", "build_database.py"]
 
 EXPOSE 8000
-CMD ["python3", "app.py"]
+RUN python3 app.py &
