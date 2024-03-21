@@ -1,9 +1,18 @@
 import pytest
 import requests
 import json
+import sys
 
 
-base_url = "http://127.0.0.1:8000"
+platform = sys.platform
+print ("this is the platform: "+ platform)
+
+if "darwin" in platform:
+    base_url = 'http://127.0.0.1:8000'
+else:
+    base_url = 'http://0.0.0.0:8000'
+
+#base_url = "http://127.0.0.1:8000"
 api_url = base_url + "/api/"
 people_url = api_url + "people/"
 note_url = api_url + "notes/"
