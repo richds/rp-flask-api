@@ -5,15 +5,13 @@ import sys
 
 
 platform = sys.platform
-print ("this is the platform: "+ platform)
+print("this is the platform: " + platform)
 
 if "darwin" in platform:
     base_url = 'http://127.0.0.1:8000'
 else:
-    #base_url = 'http://172.17.0.3:8000'
     base_url = 'http://0.0.0.0:8000'
 
-#base_url = "http://127.0.0.1:8000"
 api_url = base_url + "/api/"
 people_url = api_url + "people/"
 note_url = api_url + "notes/"
@@ -112,7 +110,7 @@ def test_delete_person():
 def test_get_notes():
     r = requests.get(people_url.rstrip("/"))
     assert r.status_code == 200, r.text
-    items_to_check = ("No need to hide the eggs this time.",
+    items_to_check = ("No need to hide the ham this time.",
                         "Really! Only good deeds from now on!",
                         "I brush my teeth after each meal.")
     for item in items_to_check: 
@@ -129,6 +127,7 @@ def test_update_note():
     assert r.status_code == 200
     y = requests.get(people_url.rstrip("/"))
     assert "this is a new note" in y.text, "expected string not in: \n" + y.text
+
 
 @pytest.fixture()
 def new_note_fix(request):
