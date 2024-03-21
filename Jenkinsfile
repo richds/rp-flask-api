@@ -8,7 +8,11 @@ pipeline {
         }
         stage('test'){
             steps {
-                sh 'python3 --version'
+                catchError (buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    dir ("tests") {
+                    sh 'pytest -svx api_test.py'
+                    }
+                }
             }
         }
     }
