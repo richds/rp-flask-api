@@ -20,7 +20,7 @@ pipeline {
                     sh 'python3 build_database.py'
                     sh 'python3 app.py &'
                     dir ("tests") {
-                    sh 'pytest -svx api_test.py --junitxml=/results/test_results.xml'
+                    sh 'pytest -svv api_test.py --junitxml=/results/test_results.xml'
                     }
                 }
             }
