@@ -1,11 +1,14 @@
 pipeline {
-    agent {
-        docker { image 'node:lts-alpine3.19' }
-    }
+    agent dockerfile
     stages {
-        stage('Test') {
+        stage('buildapp') {
             steps {
-                sh 'node --version'
+                sh 'python3 --version'
+            }
+        }
+        stage('test'){
+            steps {
+                sh 'python3 --version'
             }
         }
     }
