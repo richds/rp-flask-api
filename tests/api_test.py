@@ -12,6 +12,8 @@ if "darwin" in platform:
 else:
     base_url = 'http://0.0.0.0:8000'
 
+base_url = "http://host.docker.internal"
+
 api_url = base_url + "/api/"
 people_url = api_url + "people/"
 note_url = api_url + "notes/"
@@ -41,6 +43,7 @@ def test_hello_world():
 
 def test_get_people():
     r = requests.get(people_url.rstrip("/"))
+    print("This is the request: " + str(r.url))
     assert r.status_code == 200
     items_to_check = ("Tooth", "Fairy", "Knecht", "timestamp")
     for item in items_to_check: 
