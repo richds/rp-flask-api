@@ -12,7 +12,6 @@ if "darwin" in platform:
 else:
     base_url = 'http://0.0.0.0:8000'
 
-base_url = "http://host.docker.internal"
 
 api_url = base_url + "/api/"
 people_url = api_url + "people/"

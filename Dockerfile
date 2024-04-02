@@ -11,6 +11,4 @@ RUN python3 build_database.py
 
 EXPOSE 8000
 
-RUN python3 app.py
-
-ENTRYPOINT pytest -svv
+ENTRYPOINT python3 app.py & sleep 1 && pytest -sv
