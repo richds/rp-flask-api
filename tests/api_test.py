@@ -44,7 +44,7 @@ def test_get_people():
     r = requests.get(people_url.rstrip("/"))
     print("This is the request: " + str(r.url))
     assert r.status_code == 200
-    items_to_check = ("Mouth", "Fairy", "Knecht", "timestamp")
+    items_to_check = ("Tooth", "Fairy", "Knecht", "timestamp")
     for item in items_to_check: 
         assert item in r.text, item + " not found in return string: " + pretty_print_json(r.text)
 
